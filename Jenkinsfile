@@ -21,9 +21,7 @@ pipeline {
               }
             }
           }
-        }
-        stage('Secrets Scanner') {
-          parallel {
+          stage('Secrets Scanner') {
             stage('Install Dependencies') {
               steps {
                 container('trufflehog') {
@@ -31,8 +29,8 @@ pipeline {
                 }
               }
             }
-          }
        }
+        }
     stage('Build') {
       steps {
         container('maven') {
