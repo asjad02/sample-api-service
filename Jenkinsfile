@@ -11,7 +11,6 @@ pipeline {
     IMAGE_REGISTRY = "rmkanda"
   }
   stages {
-      parallel{
         stage('Setup') {
           parallel {
             stage('Install Dependencies') {
@@ -34,7 +33,6 @@ pipeline {
             }
           }
        }
-    }
     stage('Build') {
       steps {
         container('maven') {
