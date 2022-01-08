@@ -77,6 +77,24 @@ pipeline {
         }
       }
     }
+    stage('Docker image analysis') {
+      parallel {
+        stage('Container scan via grype') {
+          steps {
+            container('docker-tools') {
+              sh 'grype ${APP_NAME}'
+            }
+          }
+        }
+        stage('Container scan via dockel') {
+          steps {
+            container('docker-tools') {
+              sh 'dockle ${APP_NAME}'
+            }
+          }  
+        }
+      }
+    }
     stage('Deploy to Dev') {
       steps {
         container('docker-tools') {
