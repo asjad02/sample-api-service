@@ -11,16 +11,29 @@ pipeline {
     IMAGE_REGISTRY = "rmkanda"
   }
   stages {
-    stage('Setup') {
-      parallel {
-        stage('Install Dependencies') {
-          steps {
-            container('maven') {
-              sh './mvnw install -DskipTests -Dspotbugs.skip=true -Ddependency-check.skip=true'
+      parallel{
+        stage('Setup') {
+          parallel {
+            stage('Install Dependencies') {
+              steps {
+                container('maven') {
+                  sh './mvnw install -DskipTests -Dspotbugs.skip=true -Ddependency-check.skip=true'
+                }
+              }
             }
           }
         }
-      }
+        stage('Secrets Scanner') {
+          parallel {
+            stage('Install Dependencies') {
+              steps {
+                container('trufflehog') {
+                  sh 'trufflehog --exclude_paths ./PREREQUISITE.md ${GIT_URL}'
+                }
+              }
+            }
+          }
+       }
     }
     stage('Build') {
       steps {
