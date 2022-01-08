@@ -44,6 +44,7 @@ pipeline {
               sh './mvnw test'
             }
           }
+        }
         stage('OSS check') {
           steps {
             container('maven') {
