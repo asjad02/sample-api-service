@@ -86,7 +86,7 @@ pipeline {
             }
           }
         }
-        stage('Container scan via dockel') {
+        stage('Container scan via dockle') {
           steps {
             container('docker-tools') {
               sh 'dockle ${APP_NAME}'
