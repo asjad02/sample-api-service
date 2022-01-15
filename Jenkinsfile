@@ -23,7 +23,9 @@ pipeline {
         stage('Secrets Scanner') {
           steps {
             container('trufflehog') {
-              sh "trufflehog --exclude_paths secrets-exclude.txt ${GIT_URL}"
+              catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
+                sh "trufflehog --exclude_paths secrets-exclude.txt ${GIT_URL}"
+              }
             }
           }
         }
@@ -62,6 +64,20 @@ pipeline {
         }
       }
     }
+    // stage('License-Finder') {
+    //   steps {
+    //     container('licensefinder') {
+    //       catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+    //         sh '''#!/bin/bash --login
+    //                 /bin/bash --login
+    //                 rvm use default
+    //                 gem install license_finder
+    //                 license_finder
+    //               '''
+    //       }
+    //     }
+    //   }
+    // }
     stage('Package') {
       steps {
         container('docker-tools') {
@@ -82,7 +98,7 @@ pipeline {
         stage('Container scan via grype') {
           steps {
             container('docker-tools') {
-              sh 'grype ${APP_NAME}'
+              sh 'grype ${APP_NAME} || exit 0'
             }
           }
         }
