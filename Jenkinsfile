@@ -78,6 +78,20 @@ pipeline {
         }
       }
     }
+    stage('OSS check') {
+      steps {
+        container('maven') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            sh './mvnw compile spotbugs:check'
+          }
+        }
+      }  
+      post {
+        always {
+          recordIssues enableForFailure: true, tools: spotbugs()
+        }
+      }
+    }
     stage('Package') {
       steps {
         container('docker-tools') {
