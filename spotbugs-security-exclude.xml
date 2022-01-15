@@ -1,6 +1,11 @@
-<FindBugsFilter>
-<!-- <Match>
+<!-- <FindBugsFilter>
+<Match>
   <Class name="com.sample.UserManager.LoadDatabase" />
   <Bug pattern="CRLF_INJECTION_LOGS" />
-</Match> -->
+</Match>
+</FindBugsFilter> -->
+<FindBugsFilter>
+    <Match>
+        <Bug category="SECURITY"/>
+    </Match>
 </FindBugsFilter>
