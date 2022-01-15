@@ -78,17 +78,19 @@ pipeline {
         }
       }
     }
-    stage('OSS check') {
-      steps {
-        container('maven') {
-          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-            sh './mvnw compile spotbugs:check'
+    stage('SAST') {
+          steps {
+            container('maven') {
+              catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                sh './mvnw compile spotbugs:check'
+              }
+            }
           }
-        }
-      }  
-      post {
-        always {
-          recordIssues enabledForFailure: true, tool: spotbugs()
+          post {
+            always {
+              recordIssues enabledForFailure: true, tool: spotBugs() 
+            }
+          }
         }
       }
     }
