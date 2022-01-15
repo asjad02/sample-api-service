@@ -123,6 +123,13 @@ pipeline {
             }
           }  
         }
+        stage('IaC via kubesec') {
+          steps {
+            container('docker-tools') {
+              sh 'sh "kubesec scan k8s.yaml || exit 0"'
+            }
+          }  
+        }
       }
     }
     stage('Deploy to Dev') {
