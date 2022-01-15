@@ -88,7 +88,7 @@ pipeline {
       }  
       post {
         always {
-          recordIssues enableForFailure: true, tools: spotbugs()
+          recordIssues enabledForFailure: true, tools: spotbugs()
         }
       }
     }
